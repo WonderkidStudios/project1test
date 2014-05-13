@@ -1,8 +1,46 @@
-Needed Modules:
+=========How to run:
+
+1) create a mongo DB  (e.g. tmpmedia_service ) and a collection "notes"
+1) configure the settings in the file config/config.js
+2) node run.js
+
+=========Needed Modules:
 
 1) logule - very suitable log system
 2) express
 3) mongoose
-4) print_r - not mandatory, I use it for debug purposes
 5) body-parser
-6) basic-auth-connect  
+6) passport
+7) passport-http  
+
+
+========Sample DB dump
+
+/** notes indexes **/
+db.getCollection("notes").ensureIndex({
+  "_id": NumberInt(1)
+},[
+  
+]);
+
+/** notes records **/
+db.getCollection("notes").insert({
+  "__v": NumberInt(0),
+  "_id": ObjectId("5370d28bfd13ef4722775e3d"),
+  "title": "EEEEE."
+});
+db.getCollection("notes").insert({
+  "title": "bebebe",
+  "_id": ObjectId("5370d33dfd13ef4722775e3e"),
+  "__v": NumberInt(0)
+});
+db.getCollection("notes").insert({
+  "title": "bebebe",
+  "_id": ObjectId("5370d3d373db187f22f470ef"),
+  "__v": NumberInt(0)
+});
+db.getCollection("notes").insert({
+  "title": "bebebe",
+  "_id": ObjectId("5370d441591b079c2242dfe2"),
+  "__v": NumberInt(0)
+});

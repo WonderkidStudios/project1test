@@ -5,24 +5,24 @@ module.exports = function(rootObj) {
   express = rootObj.express;
   connectDomain = rootObj.connectDomain;
   models = rootObj.models;
-  print_r = rootObj.print_r;
   bodyParser = rootObj.bodyParser;
   BasicStrategy = rootObj.BasicStrategy;
 
-  app.log.info(config.dev_mongoDdUrl);
+  log.info(config.dev_mongoDdUrl);
   
 
   //Middleware
   app.use(bodyParser());
   
-  /*
-    Errors handling
-  */
+  
+  //Errors handling
   app.use(function(err, req, res, next) {
-    console.error(err.stack);
+    log.error(err.stack);
+
     res.send(500, 'Something broke!');
   });
   
+  log.info (app.get('env'));
 
   if ('development' == app.get('env')) {
     app.mongoose.connect(config.dev_mongoDdUrl, config.dev_mongoDdUrlOptions);
@@ -32,6 +32,7 @@ module.exports = function(rootObj) {
     app.mongoose.connect(config.prod_mongoDdUrl, config.prod_mongoDdUrlOptions);
   };
 
+ 
   //Loading DB schemas/modules [start]
   models.Notes = require(config.modelsFolder + '/Notes/Notes.js')(app.mongoose).model;
   //Loading DB schemas/modules [end]
@@ -49,7 +50,8 @@ module.exports = function(rootObj) {
   //HTTP AUTH [start]
   app.use(passport.initialize());
   var auth = require(config.modulesDir + '/auth/auth.js');
-  // Use the BasicStrategy within Passport.
+  
+  //   Use the BasicStrategy within Passport.
   //   Strategies in Passport require a `verify` function, which accept
   //   credentials (in this case, a username and password), and invoke a callback
   //   with a user object.

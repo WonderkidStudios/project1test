@@ -1,20 +1,17 @@
-
-
 var resultingArray; 
 
-
+//get he list of all notes available
 exports.listAllNotes = function (models) {
   return function (req, res) {
-    
+    log.line ("listAllNotes");
+ 
     var modelNotes = models.Notes;
+
   	return modelNotes.find(function (err, notesA) {
       if (!err) {
-        mandatoryHeader(res);
-        //res.set('Content-Type', 'application/json');
         return res.send(200, prepareNoteResults(notesA)); //return the list
       } else {
-        console.log(err);
-        mandatoryHeader(res);
+        log.error(err);
         return res.send(500); //some unexpected error
       }
     });
@@ -22,24 +19,22 @@ exports.listAllNotes = function (models) {
 
 }
 
+//create a new note
 exports.createNote = function (models) {
   return function (req, res) {
-    console.log ("createNote");
-    //console.log(req.param('title'));
-    
+    log.line ("createNote");
+
     var modelNotes = models.Notes;
     var note = new modelNotes({
       title: req.body.title,
     });
+
     note.save(function (err) {
       if (!err) {
-        console.log("created");
-        //res.set('Content-Type', 'application/json');
-        mandatoryHeader(res);
+        log.line("created");
         return res.send(201,prepareNoteResult(note)); //created
       } else {
-        console.log(err);
-        mandatoryHeader(res);
+        log.error(err);
         return res.send(500); //some unexpected error
       }
     });
@@ -47,30 +42,26 @@ exports.createNote = function (models) {
   }
 }
 
+//update an existing note
 exports.updateNote = function (models) {
   return function (req, res) {
-    console.log ("updateNote");
+    log.line ("updateNote");
     var modelNotes = models.Notes;
     
-    //console.log (req);
     return modelNotes.findById(req.body.id, function (err, note) {
       if  (!note)
       {
-        console.log("item "+req.body.id+" was not foud");
-        mandatoryHeader(res);
+        log.warn("item "+req.body.id+" was not foud");
         return res.send(404, 'NOT FOUND');
       }
       note.title = req.body.title;
       
       return note.save(function (err) {
         if (!err) {
-          console.log("updated");
-          //res.set('Content-Type', 'application/json');
-          mandatoryHeader(res);
+          log.line("updated");
           return res.send(200, prepareNoteResult(note)); //updated sucessfully
         } else {
-          console.log(err);
-          mandatoryHeader(res);
+          log.error(err);
           return res.send(500); //some unexpected error
         }
       });
@@ -78,52 +69,47 @@ exports.updateNote = function (models) {
   }
 }
 
+//get a single note by id
 exports.getNote = function (models) {
   return function (req, res) {
-    console.log ("getNote");
+    log.line ("getNote");
     var modelNotes = models.Notes;  
     
-    console.log (req);
+    //log.line (req);
     return modelNotes.findById(req.params[0], function (err, note) {
       if ((!err)&&(note)) {
         res.set({
-                //'Content-Type': 'application/json',
-                'X-My-Header': 'The Value',
+                  'X-My-Header': 'The Value',
                 });
-        mandatoryHeader(res);
+        
         return res.send(200, prepareNoteResult(note)); //found and return it now
       } else {
-        console.log(err);
-        mandatoryHeader(res);
+        log.error(err);
         return res.send(404, 'NOT FOUND');
       }
     });
   }
 }
 
-
+//delete an existing method by id
 exports.deleteNote = function (models) {
   return function (req, res) {
-    console.log ("deleteNote");
+    log.line ("deleteNote");
     var modelNotes = models.Notes;
     
-    console.log (req);
     return modelNotes.findById(req.params[0], function (err, note) {
       
       if (!note)
       {
-        console.log(err);
-        mandatoryHeader(res);
+        log.line(err);
         return res.send(404, 'NOT FOUND');
       }
       return note.remove(function (err) {
         if (!err) {
-          console.log("removed");
-          mandatoryHeader(res);
+          log.line("removed");
           return res.send(204);
         } else {
-          console.log(err);
-          mandatoryHeader(res);
+          log.line(err);
           return res.send(500); //some unexpected error
         }
       });
@@ -135,20 +121,8 @@ exports.deleteNote = function (models) {
 
 
 //internal functions
-
-  function mandatoryHeader(res){
-   /*
-    res.set({
-                //'Content-Type': 'application/json',
-                'Access-Control-Allow-Methods': 'OPTIONS,GET,HEAD,POST,PUT,DELETE,TRACE,CONNECT',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Max-Age': '10',
-                'Content-Type': 'application/json',
-                });
-
-*/
-  }
-
+ 
+  //Prepare the array with note results for the output
   function prepareNoteResults(notesA){
     resultingArray = new Array();
     notesA.forEach(function (note){
@@ -158,6 +132,7 @@ exports.deleteNote = function (models) {
   }
 
   //I do not want to implement an "id" field, since it may lead to mis-synchronization, so I better rename _id to id in the result
+  //Plus maybe in the future I may want to show only certain fields, etc.
   function prepareNoteResult(note){
 
     var publicNote = {

@@ -1,15 +1,5 @@
 exports.start  = function() {
     
-    var log     = require('logule').init(module); //suitable logger
-    log.debug ("Spawning new worker");
-
-
-    
-    /*
-        Basic dependencies [start]
-    */
-    var print_r       = require('print_r').print_r;
-    
     //Include the config file
     global.rootDir = __dirname;
     var config = require('./config/config.js')();
@@ -20,6 +10,11 @@ exports.start  = function() {
     var app           = express();
     module.exports = app;
     
+    //adding log
+    var log     = require('logule').init(module); //suitable logger
+    app.log       = log; //adding log
+    global.log    = log;
+
     //Connect middleware
     var bodyParser = require('body-parser');
     
@@ -29,40 +24,24 @@ exports.start  = function() {
 
     //MongoDB
     app.mongoose  = require ('mongoose'); //ODM for MongoDb
-
-    //adding log
-    app.log       = log; //adding log
-    global.log    = log;
-
-    var models        = {}; //We will place all the models here
-
-    /*
-       Basic dependencies [end]
-    */
-
-    //add configurer
+    
+    //We will place all the models here
+    var models        = {}; 
+ 
+    //Configure modules, etc
     var configurerParams = {
         express: express,
         app: app,
         models: models,
-        print_r: print_r,
         bodyParser: bodyParser,
         BasicStrategy: BasicStrategy,
-        
     };
     var configurer    = require('./configurer.js')(configurerParams); // configure modules 
 
-    // Routing file (for the file structure of the project)
+    //Routing file (for the file structure of the project)
     require(config.routesFolder+'/routes.js')(app, models);
-    /*
-    app.get('/', function (req, res) {  
-        res.send('API is running');  
-    });
-*/
 
     app.listen (config.processPort);
 
-    //log.info print_r(config)
     log.info (config.processPort);
-    //log.info "Express server listening on port #{config.processPort}"
 }

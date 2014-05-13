@@ -1,4 +1,5 @@
 
+//verification function for the passport basic auth
 exports.asynchronousVerification = function(username, password, done) {
       // asynchronous verification, for effect...
       process.nextTick(function () {

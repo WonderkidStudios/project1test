@@ -1,6 +1,5 @@
 cluster = require('cluster');
 log     = require('logule');
-require('coffee-script');
 
 if (cluster.isMaster) {
   log.info("Master have just started");
@@ -13,6 +12,6 @@ if (cluster.isMaster) {
     return cluster.fork();
   });
 } else {
-  app = require('./test.coffee');
+  app = require('./test.js');
   app.start()
 }

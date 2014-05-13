@@ -7,17 +7,18 @@ module.exports = function() {
     */
     process.env.NODE_ENV = 'development';
     
+    //dev DB info
     this.dev_mongoDdUrl = "mongodb://localhost/tmpmedia_service";
     this.dev_mongoDdUrlOptions  =  {
             //db: { native_parser: true },
-            user: 'admin',
-            pass: ''
+            user: 'tmpmedia',
+            pass: '123456'
     };
 
+    //prod DB info
     this.prod_mongoDdUrl = 'mongodb://localhost';
     this.prod_mongoDdUrlOptions     = {
             //db: { native_parser: true },
-            replset: { rs_name: 'myReplicaSetName', socketOptions: { keepAlive: 1 } },
             user: 'some_username',
             pass: 'some_password'
     };
@@ -36,6 +37,7 @@ module.exports = function() {
 
     this.processPort    = process.env.PORT || 3000; // (can also be set from command line before running app, like PORT=production node app.js)
 
+    //hardcoded users with log/pas for basic http authentication
     this.http_users = [
         { username: 'system', password: 'Sy5t3m' },
         
