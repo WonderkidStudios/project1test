@@ -10,7 +10,6 @@ module.exports = function() {
     //dev DB info
     this.dev_mongoDdUrl = "mongodb://localhost/tmpmedia_service";
     this.dev_mongoDdUrlOptions  =  {
-            //db: { native_parser: true },
             user: 'tmpmedia',
             pass: '123456'
     };
@@ -18,7 +17,6 @@ module.exports = function() {
     //prod DB info
     this.prod_mongoDdUrl = 'mongodb://localhost';
     this.prod_mongoDdUrlOptions     = {
-            //db: { native_parser: true },
             user: 'some_username',
             pass: 'some_password'
     };
