@@ -1,9 +1,7 @@
 define([
 	"jquery",
 	"marionette",
-	"router",
-	"views/notes/NotesCollectionView",
-	"collections/NotesCollection"
+	"router"
 ], function($, Marionette, Router) {
 	var app = new Marionette.Application();
 	

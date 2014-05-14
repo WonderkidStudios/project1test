@@ -3,7 +3,7 @@ define([
 	"views/notes/NotesItemView"
 ], function(Marionette, NotesItemView) {
 	return Marionette.CollectionView.extend({
-		tagName: 'table',
+		tagName: "table",
 		itemView: NotesItemView,
 		onBeforeRender: function() {
 			this.$el.empty();

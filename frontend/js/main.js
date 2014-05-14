@@ -9,24 +9,24 @@ require.config({
 	},
 	shim: {
 		jquery: {
-			exports: '$'
+			exports: "$"
 		},
 		underscore: {
-			exports: '_'
+			exports: "_"
 		},
 		backbone: {
-			deps: ['jquery', 'underscore'],
-			exports: 'Backbone'
+			deps: ["jquery", "underscore"],
+			exports: "Backbone"
 		},
 		marionette: {
-			deps: ['jquery', 'underscore', 'backbone'],
-			exports: 'Marionette'
+			deps: ["jquery", "underscore", "backbone"],
+			exports: "Marionette"
 		} 
 	}
 });
 
 require([
-	'app'
+	"app"
 ], function(App) {
 	App.start();
 });

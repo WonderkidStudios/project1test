@@ -1,11 +1,11 @@
 define([
 	"backbone",
 	"marionette",
-	"controllers/NotesController"
+	"controllers/notes/NotesController"
 ], function(Backbone, Marionette, NotesController) {	
 	var AppRouter = Marionette.AppRouter.extend({
 		initialize: function(options) {
-			this.controller = new NotesController({ App: options.App });
+			this.controller = new NotesController();
 		},
 		
 		appRoutes: {
@@ -16,19 +16,15 @@ define([
 			"*actions": "indexRoute"
 		},
 		
-		indexRoute: function() {
-			//console.log("index");
-		}
+		indexRoute: function() {}
 	});
 
-	var initialize = function(App) {
-		var router = new AppRouter({App: App});
+	var initialize = function() {
+		var router = new AppRouter();
 		Backbone.history.start();
 	};
 	
 	return {
-		initialize: function(App) {
-			initialize(App);
-		}
+		initialize: initialize
 	};
 });

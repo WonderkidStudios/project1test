@@ -1,0 +1,8 @@
+#notesBlock {
+	border: 1px solid black;
+	display: inline-block;
+}
+
+body > a {
+	display: block;
+}

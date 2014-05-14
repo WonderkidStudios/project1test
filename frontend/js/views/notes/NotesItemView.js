@@ -1,8 +1,10 @@
 define([
+	"jquery",
 	"underscore",
 	"marionette",
-	"text!/templates/tpl_note.html"
-], function(_, Marionette, tplNote) {
+	"views/notes/NotesEditView",
+	"text!/templates/notes/tpl_note.html"
+], function($, _, Marionette, NotesEditView, tplNote) {
 	return Marionette.ItemView.extend({
 		tagName		: "tr",
 		className	: "note",
@@ -15,18 +17,8 @@ define([
 		
 		editNote: function(e) {
 			e.preventDefault();
-			var newTitle = prompt("Enter new note title:", this.model.get("title"));
-			this.model.on("invalid", function(model, error) {
-				alert(error);
-			});
-			this.model.save({title: newTitle}, {
-				success: function() {
-					//console.log("edit ok");
-				},
-				error: function(model, error) {
-					console.log(error);
-				}
-			});
+			
+			new NotesEditView({model: this.model, el: $("#noteActions")}).render();
 		},
 		
 		deleteNote: function(e) {
